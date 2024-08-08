@@ -1,0 +1,3 @@
+[submodule "clip-nerf"]
+	path = clip-nerf
+	url = https://github.com/TWeber132/thesis-clip-nerf.git
