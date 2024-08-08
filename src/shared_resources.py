@@ -1,18 +1,20 @@
-import threading
-import os
-
-import numpy as np
-from hydra import compose, initialize
-from hydra.core.global_hydra import GlobalHydra
-from omegaconf import OmegaConf
-
 from loguru import logger
+from omegaconf import OmegaConf
+from hydra.core.global_hydra import GlobalHydra
+from hydra import compose, initialize
+import numpy as np
+import os
+import threading
 
-from lib.delta_ngf.grasp_optimizer import DNGFOptimizer
-from lib.delta_ngf.model import DeltaNGF
-from lib.grasp_mvnerf.grasp_optimizer import GraspMVNeRFOptimizer
-from lib.grasp_mvnerf.model import GraspMVNeRF
-from lib.lmvnerf.model_v3 import LanguageNeRF
+import importlib
+model_lib = importlib.import_module("clip-nerf.src.lib")
+if model_lib:
+    from model_lib.delta_ngf.grasp_optimizer import DNGFOptimizer
+    from model_lib.delta_ngf.model import DeltaNGF
+    from model_lib.grasp_mvnerf.grasp_optimizer import GraspMVNeRFOptimizer
+    from model_lib.grasp_mvnerf.model import GraspMVNeRF
+    from model_lib.lmvnerf.model_v3 import LanguageNeRF
+
 
 _results = {}
 _results_lock = threading.Lock()

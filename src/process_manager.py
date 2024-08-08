@@ -1,7 +1,7 @@
 import queue
 import threading
 
-from routes.grasp_process import process_optimize_poses, process_generate_trajectories
+from processes.grasp_process import process_optimize_poses, process_generate_trajectories
 
 _processing_lock = threading.Lock()
 _is_processing = False

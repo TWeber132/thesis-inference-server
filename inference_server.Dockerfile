@@ -2,7 +2,7 @@
 ##                                 Base Image                               ##
 ##############################################################################
 ARG RENDER=base
-FROM tensorflow/tensorflow:2.9.1-gpu as tf-base
+FROM tensorflow/tensorflow:2.9.1-gpu AS tf-base
 USER root
 ENV TZ=Europe/Berlin
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -10,7 +10,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 ##############################################################################
 ##                                 Dependencies                             ##
 ##############################################################################
-FROM tf-base as tf-dependencies
+FROM tf-base AS tf-dependencies
 USER root
 RUN apt update \
   && apt install -y -qq --no-install-recommends \
@@ -45,7 +45,7 @@ USER $USER
 ##############################################################################
 ##                                  User                                    ##
 ##############################################################################
-FROM tf-dependencies as tf-user
+FROM tf-dependencies AS tf-user
 #FROM base-render as user
 
 # install sudo
@@ -71,7 +71,7 @@ CMD ["bash"]
 ##############################################################################
 ##                                 Manipulation Tasks                       ##
 ##############################################################################
-FROM tf-user as tf-manipulation-tasks
+FROM tf-user AS tf-manipulation-tasks
 
 COPY --chown=$USER:$USER ./clip-nerf/dependencies /home/$USER/workspace/dependencies
 RUN cd /home/$USER/workspace/dependencies/manipulation_tasks && \
@@ -84,8 +84,8 @@ RUN pip install hydra-core --upgrade
 ##############################################################################
 ##                                 Inference Server                         ##
 ##############################################################################
-FROM tf-manipulation-tasks as inference-server
-COPY --chown=$USER:$USER ./src /home/$USER/workspace/src
+FROM tf-manipulation-tasks AS inference-server
+COPY --chown=$USER:$USER ./clip-nerf/src /home/$USER/workspace/src
 WORKDIR /home/$USER/workspace/src/lib/inference_server/backend
 ENV PYTHONPATH=$PYTHONPATH:/home/$USER/workspace/src
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8076"]

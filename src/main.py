@@ -1,18 +1,14 @@
-# main.py
 from fastapi import FastAPI, Request, HTTPException
 from starlette.responses import JSONResponse
 
-from routes.process_routes import router as process_router
+from routes.grasp_routes import router as grasp_router
 from routes.results import router as results_router
 
-# Create the FastAPI app
 app = FastAPI()
-# Include the routers
-app.include_router(process_router)
+app.include_router(grasp_router)
 app.include_router(results_router)
 
 
-# Define the exception handlers
 @app.exception_handler(Exception)
 async def validation_exception_handler(request: Request, exc: Exception):
     return JSONResponse(
@@ -27,7 +23,6 @@ async def validation_exception_handler(request: Request, exc: Exception):
     )
 
 
-# Define the health check endpoint
 @app.get("/health")
 def health_check():
     return {"status": "ok"}
