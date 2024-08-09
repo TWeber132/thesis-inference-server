@@ -2,7 +2,7 @@
 ##                                 Base Image                               ##
 ##############################################################################
 ARG RENDER=base
-FROM tensorflow/tensorflow:2.9.1-gpu AS tf-base
+FROM tensorflow/tensorflow:2.11.0-gpu AS tf-base
 USER root
 ENV TZ=Europe/Berlin
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -36,6 +36,7 @@ RUN pip install --no-cache-dir imageio
 RUN pip install --no-cache-dir msgpack colortrans
 RUN pip install --no-cache-dir fastapi uvicorn
 RUN pip install --no-cache-dir tensorflow-graphics
+RUN pip install --no-cache-dir ftfy regex
 
 USER root
 RUN add-apt-repository --remove ppa:vikoadi/ppa
@@ -73,7 +74,7 @@ CMD ["bash"]
 ##############################################################################
 FROM tf-user AS tf-manipulation-tasks
 
-COPY --chown=$USER:$USER ./clip-nerf/dependencies /home/$USER/workspace/dependencies
+COPY --chown=$USER:$USER ./clip_nerf/dependencies /home/$USER/workspace/dependencies
 RUN cd /home/$USER/workspace/dependencies/manipulation_tasks && \
     pip install .
 
@@ -85,7 +86,8 @@ RUN pip install hydra-core --upgrade
 ##                                 Inference Server                         ##
 ##############################################################################
 FROM tf-manipulation-tasks AS inference-server
-COPY --chown=$USER:$USER ./clip-nerf/src /home/$USER/workspace/src
-WORKDIR /home/$USER/workspace/src/lib/inference_server/backend
+COPY --chown=$USER:$USER ./server/src /home/$USER/workspace/src
+COPY --chown=$USER:$USER ./clip_nerf /home/$USER/workspace/src/clip_nerf
+WORKDIR /home/$USER/workspace/src
 ENV PYTHONPATH=$PYTHONPATH:/home/$USER/workspace/src
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8076"]

@@ -3,6 +3,6 @@
 ##                            Build the image                               ##
 ##############################################################################
 docker build \
-  -f inference_server.Dockerfile \
+  -f server.Dockerfile \
   -t thesis/inference-server:tf-v2.11.0 .
 

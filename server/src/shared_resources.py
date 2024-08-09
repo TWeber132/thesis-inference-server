@@ -6,14 +6,11 @@ import numpy as np
 import os
 import threading
 
-import importlib
-model_lib = importlib.import_module("clip-nerf.src.lib")
-if model_lib:
-    from model_lib.delta_ngf.grasp_optimizer import DNGFOptimizer
-    from model_lib.delta_ngf.model import DeltaNGF
-    from model_lib.grasp_mvnerf.grasp_optimizer import GraspMVNeRFOptimizer
-    from model_lib.grasp_mvnerf.model import GraspMVNeRF
-    from model_lib.lmvnerf.model_v3 import LanguageNeRF
+from clip_nerf.src.lib.delta_ngf.grasp_optimizer import DNGFOptimizer
+from clip_nerf.src.lib.delta_ngf.model import DeltaNGF
+from clip_nerf.src.lib.grasp_mvnerf.grasp_optimizer import GraspMVNeRFOptimizer
+from clip_nerf.src.lib.grasp_mvnerf.model import GraspMVNeRF
+from clip_nerf.src.lib.lmvnerf.model_v3 import LanguageNeRF
 
 
 _results = {}

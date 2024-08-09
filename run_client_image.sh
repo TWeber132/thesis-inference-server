@@ -1,11 +1,11 @@
 #!/bin/bash
 
 SRC_CONTAINER=/home/robot/workspace/src
-SRC_HOST="$(pwd)"/src
+SRC_HOST="$(pwd)"/client/src
 
 docker run \
   -it \
-  --name fastapi-server \
+  --name http-client \
   --privileged \
   --rm \
   --net host \
@@ -13,4 +13,4 @@ docker run \
   -e DISPLAY="$DISPLAY" \
   --volume="/dev:/dev":rw \
   --volume="$SRC_HOST":$SRC_CONTAINER \
-  fastapi-server:3.10.12
+  http-client:humble

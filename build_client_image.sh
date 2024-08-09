@@ -10,5 +10,5 @@ docker build \
   --build-arg UID="$uid" \
   --build-arg GID="$gid" \
   --build-arg PASSWORD="$password" \
-  -f Dockerfile \
-  -t fastapi-server:"$python_version" .
+  -f client.Dockerfile \
+  -t inference-server-client:tf-v2.11.0 .

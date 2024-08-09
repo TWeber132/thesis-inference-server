@@ -22,6 +22,7 @@ FROM base as user
 
 # Create user
 ARG USER=robot
+ENV USER=$USER
 ARG PASSWORD
 ARG UID=1000
 ARG GID=1000
@@ -36,11 +37,8 @@ USER $USER
 ##############################################################################
 FROM user as dependencies
 
-RUN pip install --no-cache-dir fastapi uvicorn msgpack
+RUN pip install --upgrade pip build
 ENV PATH="/home/$USER/.local/bin:${PATH}"
-
-RUN pip install --no-cache-dir numpy
-RUN pip install --no-cache-dir loguru
 
 RUN mkdir -p /home/$USER/workspace
 WORKDIR /home/$USER/workspace

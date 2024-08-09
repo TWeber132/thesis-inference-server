@@ -7,7 +7,7 @@ DIR_NAME=$(dirname "$PWD")
 USER_NAME=jovyan
 
 docker run \
-  --name tf \
+  --name inference-server \
   --rm \
   -it \
   --net=host \
