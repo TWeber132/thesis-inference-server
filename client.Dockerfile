@@ -2,7 +2,7 @@
 ##                                 Base Image                               ##
 ##############################################################################
 ARG PYTHON_VERSION=3.10.12
-FROM python:$PYTHON_VERSION as base
+FROM python:$PYTHON_VERSION AS base
 ENV TZ=Europe/Berlin
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
@@ -18,12 +18,12 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 ##############################################################################
 ##                                 User                                     ##
 ##############################################################################
-FROM base as user
+FROM base AS user
 
 # Create user
 ARG USER=robot
 ENV USER=$USER
-ARG PASSWORD
+ARG PASSWORD=automaton
 ARG UID=1000
 ARG GID=1000
 RUN groupadd -g $GID $USER \
@@ -35,11 +35,14 @@ USER $USER
 ##############################################################################
 ##                            Dependencies                                 ##
 ##############################################################################
-FROM user as dependencies
+FROM user AS dependencies
 
-RUN pip install --upgrade pip build
+# RUN pip install --upgrade pip build
+RUN pip install --no-cache-dir numpy
+RUN pip install --no-cache-dir fastapi uvicorn msgpack
+RUN pip install --no-cache-dir requests
 ENV PATH="/home/$USER/.local/bin:${PATH}"
 
 RUN mkdir -p /home/$USER/workspace
 WORKDIR /home/$USER/workspace
-CMD ["/bin/bash"]
+CMD ["python3", "src/main.py"]

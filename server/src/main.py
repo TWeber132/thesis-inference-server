@@ -2,11 +2,9 @@ from fastapi import FastAPI, Request, HTTPException
 from starlette.responses import JSONResponse
 
 from routes.grasp_routes import router as grasp_router
-from routes.results import router as results_router
 
 app = FastAPI()
 app.include_router(grasp_router)
-app.include_router(results_router)
 
 
 @app.exception_handler(Exception)

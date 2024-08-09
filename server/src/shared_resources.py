@@ -61,7 +61,7 @@ def remove_model_from_cache(model_name):
 
 def load_optimizer(optimizer_name, init_poses=None, workspace_bounds=None):
     GlobalHydra.instance().clear()
-    absolute_path = '/home/jovyan/data/config'
+    absolute_path = '/home/jovyan/workspace/src/clip_nerf/src/configs'
     current_path = os.getcwd()
     relative_path = os.path.relpath(absolute_path, start=current_path)
     initialize(config_path=relative_path, version_base=None)

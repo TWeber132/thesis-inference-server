@@ -11,4 +11,4 @@ docker build \
   --build-arg GID="$gid" \
   --build-arg PASSWORD="$password" \
   -f client.Dockerfile \
-  -t inference-server-client:tf-v2.11.0 .
+  -t thesis/inference-server-client:tf-v2.11.0 .

@@ -9,10 +9,6 @@ from shared_resources import set_result, get_result
 router = APIRouter()
 
 
-# @router.get("/available_optimizers/")
-# async def available_optimizers():
-#     optimizers = []
-
 @router.post("/optimize_poses")
 async def optimize_poses_grasp(request: Request, background_tasks: BackgroundTasks):
     byte_data = await request.body()
@@ -46,3 +42,4 @@ async def get_optimization_result(task_id):
         result_data = {"status": "not found"}
     packed_response = msgpack.packb(result_data)
     return Response(content=packed_response, media_type="application/octet-stream")
+
