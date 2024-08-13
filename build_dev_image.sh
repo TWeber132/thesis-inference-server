@@ -3,6 +3,6 @@
 ##                            Build the image                               ##
 ##############################################################################
 docker build \
-  -f server.Dockerfile \
-  -t universalrobotcell1/inference-server:tf-v2.11.0 .
+  -f dev.Dockerfile \
+  -t thesis/inference-server-dev:tf-v2.11.0 .
 
