@@ -11,8 +11,8 @@ from tensorflow.python.framework.errors_impl import InvalidArgumentError
 
 from shared_resources import remove_model_from_cache, set_result, get_or_load_pose_optimizer
 
-from clip_nerf.src.util import compute_features
-from clip_nerf.src.optimization import compute_results
+from clip_nerf.src.utils.util import compute_features
+from clip_nerf.src.utils.optimization import compute_results
 from clip_nerf.src.lib.clip.utils import tokenize
 
 
@@ -21,10 +21,10 @@ def process_optimize_poses(byte_data, task_id):
 
     data = msgpack.unpackb(byte_data, raw=False)
 
-    optimizer_name = data["optimizer_name"]
     observations = data["observations"]
-    queries = data['queries']
     optimization_config = data["optimization_config"]
+    texts = data['texts']
+    optimizer_name = data["optimizer_name"]
     return_trajectory = data["return_trajectory"]
     if "init_poses" in data:
         init_poses = data["init_poses"]
@@ -57,7 +57,7 @@ def process_optimize_poses(byte_data, task_id):
     pose_optimizer.clip_translation = clip_translation
 
     input_data = preprocess_input(observations)
-    tokens = preprocess_queries(queries)
+    tokens = preprocess_texts(texts)
     input_data = [*input_data, tokens]
 
     features = compute_features(
@@ -211,7 +211,7 @@ def preprocess_input(observations):
     return input_data
 
 
-def preprocess_queries(queries):
+def preprocess_texts(queries):
     tokens = tokenize(queries)
     tokens = np.array(tokens, dtype=np.int32)
     return tokens

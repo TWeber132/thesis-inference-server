@@ -20,9 +20,9 @@ def process_optimize_poses(byte_data, task_id):
 
     data = msgpack.unpackb(byte_data, raw=False)
 
-    optimizer_name = data["optimizer_name"]
     observations = data["observations"]
     optimization_config = data["optimization_config"]
+    optimizer_name = data["optimizer_name"]
     return_trajectory = data["return_trajectory"]
     if "init_poses" in data:
         init_poses = data["init_poses"]
