@@ -61,7 +61,7 @@ def process_optimize_poses(byte_data, task_id):
     input_data = [*input_data, tokens]
 
     features = compute_features(
-        input_data[0], pose_optimizer.nerf_grasper.visual_features)
+        input_data[0], input_data[3], pose_optimizer.nerf_grasper)
 
     try:
         _, losses_r, _, optimized_grasps_r, duration, all_poses = compute_results(pose_optimizer,

@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 FROM base AS user
 
 # Create user
-ARG USER=robot
+ARG USER=jovyan
 ENV USER=$USER
 ARG PASSWORD=automaton
 ARG UID=1000
@@ -30,12 +30,18 @@ RUN groupadd -g $GID $USER \
     && useradd -m -u $UID -g $GID -p "$(openssl passwd -1 $PASSWORD)" \
     --shell $(which bash) $USER -G sudo
 
-USER $USER
 
 ##############################################################################
 ##                            Dependencies                                 ##
 ##############################################################################
 FROM user AS dependencies
+
+RUN DEBIAN_FRONTEND=noninteractive \
+	apt update && \
+	apt install -y mesa-utils libgl1-mesa-glx libglu1-mesa-dev freeglut3-dev mesa-common-dev libopencv-dev python3-opencv python3-tk
+
+USER $USER
+RUN pip install --no-cache-dir opencv-contrib-python
 
 # RUN pip install --upgrade pip build
 RUN pip install --no-cache-dir numpy
@@ -47,4 +53,5 @@ ENV PATH="/home/$USER/.local/bin:${PATH}"
 RUN mkdir -p /home/$USER/workspace
 COPY --chown=$USER:$USER ./clip_nerf/src/configs /home/$USER/workspace/configs
 WORKDIR /home/$USER/workspace
-CMD ["python3", "src/main.py"]
+#CMD ["python3", "src/main.py"]
+CMD  ["/bin/bash"]
