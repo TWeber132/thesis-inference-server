@@ -23,7 +23,7 @@ def process_optimize_poses(byte_data, task_id):
 
     observations = data["observations"]
     optimization_config = data["optimization_config"]
-    texts = data['texts']
+    text = data['text']
     optimizer_name = data["optimizer_name"]
     return_trajectory = data["return_trajectory"]
     if "init_poses" in data:
@@ -57,7 +57,7 @@ def process_optimize_poses(byte_data, task_id):
     pose_optimizer.clip_translation = clip_translation
 
     input_data = preprocess_input(observations)
-    tokens = preprocess_texts(texts)
+    tokens = preprocess_text(text)
     input_data = [*input_data, tokens]
 
     features = compute_features(
@@ -211,8 +211,8 @@ def preprocess_input(observations):
     return input_data
 
 
-def preprocess_texts(queries):
-    tokens = tokenize(queries)
+def preprocess_text(text):
+    tokens = tokenize(text)
     tokens = np.array(tokens, dtype=np.int32)
     return tokens
 

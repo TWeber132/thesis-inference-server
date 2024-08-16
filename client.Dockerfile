@@ -51,7 +51,5 @@ RUN pip install hydra-core --upgrade
 ENV PATH="/home/$USER/.local/bin:${PATH}"
 
 RUN mkdir -p /home/$USER/workspace
-COPY --chown=$USER:$USER ./clip_nerf/src/configs /home/$USER/workspace/configs
 WORKDIR /home/$USER/workspace
-#CMD ["python3", "src/main.py"]
 CMD  ["/bin/bash"]
