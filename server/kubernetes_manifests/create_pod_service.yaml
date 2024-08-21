@@ -4,7 +4,7 @@ metadata:
   name: clip-nerf-inference-1
   namespace: robot-experiments
   labels:
-  	clip-nerf-inference/type: pod
+    clip-nerf-inference/type: pod
 spec:
   containers:
   - name: inference-server-container
@@ -16,7 +16,7 @@ spec:
     resources:
       limits:
         cpu: 19200m
-        memory: 41231686041600m
+        memory: 41231686041600Mi
         nvidia.com/gpu: "1"
       requests:
         cpu: "16"
@@ -24,20 +24,20 @@ spec:
         nvidia.com/gpu: "1"
     volumeMounts:
     - mountPath: "/home/jovyan/data/"
-      name: gergely-soti-clip-nerf-share-pvc-robot-experiments
+      name: clip-nerf-inference-storage
   volumes:
-  - name: gergely-soti-clip-nerf-share-pvc-robot-experiments
+  - name: clip-nerf-inference-storage
     persistentVolumeClaim:
-      claimName: gergely-soti-clip-nerf-share-pvc-robot-experiments
+      claimName: clip-nerf-inference-pvc
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-	name: clip-nerf-inference-1
+  name: clip-nerf-inference-1
   namespace: robot-experiments
   labels:
-  	clip-nerf-inference/type: service
+    clip-nerf-inference/type: service
 spec:
   ports:
   - nodePort: 31708
