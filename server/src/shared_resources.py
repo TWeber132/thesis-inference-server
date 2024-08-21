@@ -10,7 +10,7 @@ from clip_nerf.src.lib.delta_ngf.grasp_optimizer import DNGFOptimizer
 from clip_nerf.src.lib.delta_ngf.model import DeltaNGF
 from clip_nerf.src.lib.grasp_mvnerf.grasp_optimizer import GraspMVNeRFOptimizer
 from clip_nerf.src.lib.grasp_mvnerf.model import GraspMVNeRF
-from clip_nerf.src.lib.lmvnerf.model_v3 import LanguageNeRF
+from clip_nerf.src.lib.lmvnerf.model_v4 import LanguageNeRF
 
 
 _results = {}
@@ -184,21 +184,21 @@ def load_optimizer_language(cfg, workspace_bounds=None):
                  list(cfg.nerf_model.original_image_size), 3]),
         np.zeros([1, cfg.nerf_model.n_views, 4, 4]),
         np.zeros([1, cfg.nerf_model.n_views, 4, 4]),
-        np.zeros([1, 77])
+        np.zeros([1, 77], dtype=np.int32)
     ]
     _ = grasp_model(input_data)
 
-    backbone_checkpoint_name = f'{cfg.backbone_path}/model_final'
+    backbone_checkpoint_name = f'{cfg.grasp_training.backbone_path}/model_final'
     if not grasp_model.load_backbone(backbone_checkpoint_name):
         raise FileNotFoundError(
             f"Model not found at {backbone_checkpoint_name}.")
-    model_checkpoint_name = f'{cfg.model_path}/model_final'
+    model_checkpoint_name = f'{cfg.grasp_training.model_path}/model_final'
     if not grasp_model.load(model_checkpoint_name):
         raise FileNotFoundError(f"Model not found at {model_checkpoint_name}.")
 
     if workspace_bounds is None:
         workspace_bounds = cfg.generator_grasp.workspace_bounds
     grasp_optimizer = DNGFOptimizer(grasp_model,
-                                    **cfg.optimizer_config.optimizer_config,
+                                    **cfg.validation.grasp_opt_config.optimizer_config,
                                     workspace_bounds=workspace_bounds)
     return grasp_optimizer
