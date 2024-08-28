@@ -11,8 +11,8 @@ from tensorflow.python.framework.errors_impl import InvalidArgumentError
 
 from shared_resources import remove_model_from_cache, set_result, get_or_load_pose_optimizer
 
-from clip_nerf.src.util import compute_features
-from clip_nerf.src.optimization import compute_results
+from clip_nerf.src.utils.util import compute_features_wo
+from clip_nerf.src.utils.optimization import compute_results
 
 
 def process_optimize_poses(byte_data, task_id):
@@ -55,8 +55,8 @@ def process_optimize_poses(byte_data, task_id):
     pose_optimizer.clip_translation = clip_translation
 
     input_data = preprocess_input(observations)
-    features = compute_features(
-        input_data[0], pose_optimizer.nerf_grasper.visual_features)
+    features = compute_features_wo(
+        input_data[0], pose_optimizer.nerf_grasper)
 
     try:
         _, losses_r, _, optimized_grasps_r, duration, all_poses = compute_results(pose_optimizer,

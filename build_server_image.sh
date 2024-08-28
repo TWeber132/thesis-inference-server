@@ -4,5 +4,5 @@
 ##############################################################################
 docker build \
   -f server.Dockerfile \
-  -t universalrobotcell1/inference-server:tf-v2.11.0 .
+  -t universalrobotcell1/inference-server-wo:tf-v2.11.0 .
 

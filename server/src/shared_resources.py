@@ -6,11 +6,11 @@ import numpy as np
 import os
 import threading
 
-from clip_nerf.src.lib.delta_ngf.grasp_optimizer import DNGFOptimizer
+from clip_nerf.src.lib.delta_ngf.grasp_optimizer_wo import DNGFOptimizer
 from clip_nerf.src.lib.delta_ngf.model import DeltaNGF
 from clip_nerf.src.lib.grasp_mvnerf.grasp_optimizer import GraspMVNeRFOptimizer
 from clip_nerf.src.lib.grasp_mvnerf.model import GraspMVNeRF
-from clip_nerf.src.lib.lmvnerf.model_v4 import LanguageNeRF
+from clip_nerf.src.lib.lmvnerf.model_wo import LanguageNeRF
 
 
 _results = {}
